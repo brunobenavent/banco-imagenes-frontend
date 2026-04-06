@@ -2,6 +2,11 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
+// Configure axios with VITE_API_URL from environment
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+axios.defaults.baseURL = API_URL;
+
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
@@ -49,6 +54,7 @@ export function AuthProvider({ children }) {
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     delete axios.defaults.headers.common['Authorization'];
     setToken(null);
     setUser(null);
